@@ -1,6 +1,9 @@
 const express = require("express");
 const app = new express();
 
+//router
+const router = require("./src/routes/api");
+
 
 //importing security middlewares
 const mongoose = require("mongoose");
@@ -30,6 +33,13 @@ app.use(express.json({extended:"100Mb"}));
 app.use(express.urlencoded({extended:"100Mb"}));
 app.use(cookieParser());
 
+//implementing router
+app.use("/api/v1",router);
+
+//404 route
+app.use("*", (req, res) => {
+    res.status(404).json({status:"404 Not Found" , message:"No Url Available"});
+});
 
 //MongoDB database connection
 async function connectToMongoDB() {
