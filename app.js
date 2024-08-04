@@ -7,6 +7,7 @@ const router = require("./src/routes/api");
 
 //importing security middlewares
 const mongoose = require("mongoose");
+require('dotenv').config();
 const cors = require("cors");
 const hpp = require("hpp");
 const helmet= require("helmet");
@@ -44,7 +45,7 @@ app.use("*", (req, res) => {
 //MongoDB database connection
 async function connectToMongoDB() {
     try {
-        const uri = `mongodb+srv://mombaby:mom&baby@team.by4qiin.mongodb.net/mom&baby`;
+        const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@team.by4qiin.mongodb.net/mom&baby`;
         await mongoose.connect(uri);
         console.log("Connected to MongoDB");
 
