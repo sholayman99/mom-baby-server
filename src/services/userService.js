@@ -1,6 +1,7 @@
 const userModel = require("../models/userModel");
 const emailSend = require("../utility/emailUtility");
 const otpModel = require("../models/otpModel");
+const { encodeToken } = require("../utility/tokenUtility");
 
 const userRegistrationService =async (req)=>{
  try{
@@ -37,6 +38,24 @@ const userVerificationService = async(req)=>{
    }
 }
 
+const loginService = async(req)=>{
+   try{
+     let email = req.body['email'];
+     let password = req.body['password'];
+     let userCount = await userModel.aggregate([{$match:{email:email,password:password}}]);
+     if(userCount.length === 1){
+       let user_id = await userModel.find({email:email}).select("_id");
+       let userID = user_id[0]['_id'];
+       let role = userCount[0]['role'];
+       let token = await encodeToken(email,userID.toString(),role);
+       return {status:"success",data:token,message:"valid user!"}
+     }
+   }
+   catch(e){
+     return {status:"fail",data:e};
+   }
+}
 
 
-module.exports = {userRegistrationService,userVerificationService}
+
+module.exports = {userRegistrationService,userVerificationService,loginService}
