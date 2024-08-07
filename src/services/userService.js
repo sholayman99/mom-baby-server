@@ -87,6 +87,55 @@ const resetPassService = async(req)=>{
 }
 
 
+const userInfoService = async(req)=>{
+    try{
+      let email = req.headers['email'];
+      let data = await userModel.aggregate([{$match:{email:email}}]);
+      return {status:"success" , data:data};
+    }
+    catch{
+      return {status:"fail" , data:e};
+    }
+}
+
+
+const updateNameService = async(req)=>{
+try{
+   let email = req.headers['email'];
+   let name = req.body['fullName'];
+   let data = await userModel.updateOne({email:email},{fullName:name},{upsert:true});
+   return {status:"success" , data:data};
+}
+catch{
+  return {status:"fail" , data:e};
+}
+}
+
+const updateMobileService = async(req)=>{
+   try{
+      let email = req.headers['email'];
+      let mobile = req.body['mobile'];
+      let data = await userModel.updateOne({email:email},{mobile:mobile},{upsert:true});
+      return {status:"success" , data:data};
+   }
+   catch{
+     return {status:"fail" , data:e};
+   }
+}
+
+ const updateAvatarService = async(req)=>{
+   try{
+      let email = req.headers['email'];
+      let avatar = req.body['avatar'];
+      let data = await userModel.updateOne({email:email},{avatar:avatar},{upsert:true});
+      return {status:"success" , data:data};
+   }
+   catch{
+     return {status:"fail" , data:e};
+   }
+ }  
+
+
 module.exports = {userRegistrationService,userVerificationService,loginService,updatePassOtpService,
-   resetPassService,
+   resetPassService,userInfoService,updateNameService,updateMobileService,updateAvatarService
 }

@@ -1,5 +1,5 @@
 const {userRegistrationService,userVerificationService,loginService,updatePassOtpService,
-  resetPassService
+  resetPassService,userInfoService,updateNameService,updateMobileService,updateAvatarService
 } = require("../services/userService")
 
 //create user
@@ -40,5 +40,25 @@ exports.updatePassOtp = async(req,res)=>{
 
 exports.resetPass=async(req,res)=>{
   let data = await resetPassService(req);
+  res.status(200).json(data);
+}
+
+exports.userInfo = async(req,res)=>{
+  let data = await userInfoService(req);
+  res.status(200).json(data);
+}
+
+exports.updateMobile = async(req,res)=>{
+  let data = await updateMobileService(req);
+  res.status(200).json(data);
+}
+
+exports.updateName = async(req,res)=>{
+  let data = await updateNameService(req);
+  res.status(200).json(data);
+}
+
+exports.updateAvatar = async(req,res)=>{
+  let data = await updateAvatarService(req);
   res.status(200).json(data);
 }
