@@ -8,7 +8,7 @@ const userRegistrationService =async (req)=>{
     let reqBody = req.body;
     let email = reqBody['email'];
     let code = Math.round(Math.floor(100000+Math.random()*900000));
-    await emailSend(email,"User Verification",`Your Otp Verification Code is ${code}`);
+    await emailSend(email,"Verification for new user!",`Your Otp Verification Code is ${code}`);
     await otpModel.create({email:email,otp:code});
     let data = await userModel.create(reqBody);
     return ({status:"success", data:data});
@@ -20,13 +20,11 @@ const userRegistrationService =async (req)=>{
 
 const userVerificationService = async(req)=>{
    try{
-      console.log(req.params)
       let otp = req.params['otp'];
       let email = req.params['email'];
       let status = 0;
       let updatedStatus =1;
       let otpCount = await otpModel.aggregate([{$match:{email:email,otp:otp}}]);
-      console.log(req)
       if(otpCount.length === 1){
          let data = await otpModel.updateOne({email:email,otp:otp,status:status},
             {email:email,otp:otp,status:updatedStatus});
@@ -57,5 +55,38 @@ const loginService = async(req)=>{
 }
 
 
+const updatePassOtpService =async(req)=>{
+   try{
+      let email = req.headers['email'];
+      let userCount = await userModel.aggregate([{$match:{email:email}}]);
+      if(userCount.length === 1){
+          let code = Math.round(Math.floor(100000+Math.random()*900000));
+          await emailSend(email,"Verification for reset password",`Your Otp Verification Code is:${code}`);
+          await otpModel.updateOne({email:email},{status:0,otp:code});
+          return {status:"success" , message:"6 digit Otp has been sent to your email!"}
+      }
 
-module.exports = {userRegistrationService,userVerificationService,loginService}
+   }catch(e){
+      return {status:"success" , message:"Something went wrong!"}
+   }
+}
+
+const resetPassService = async(req)=>{
+  try{
+   let otp = req.params['otp'];
+   let email = req.headers['email'];
+   let reqBody = req.body;
+   let updatedStatus = 1;
+   await otpModel.updateOne({email:email,otp:otp},{email:email,status:updatedStatus});
+   let data = await userModel.updateOne({email:email},reqBody,{upsert:true});
+   return {status:"success" , message:"password changed successfully!"}
+  }
+  catch(e){
+   return {status:"success" , message:"Something went wrong!"}
+}
+}
+
+
+module.exports = {userRegistrationService,userVerificationService,loginService,updatePassOtpService,
+   resetPassService,
+}

@@ -13,7 +13,7 @@ exports.encodeToken=(email,userID,role)=>{
 exports.decodeToken=(token)=>{
     try{
         let key = "123-secret-xyz";
-        jwt.verify(token,key);
+        return jwt.verify(token,key);
 
     }
     catch(e){
