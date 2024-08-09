@@ -1,0 +1,52 @@
+[
+    {
+      "title": "Women cotton full sleve",
+      "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRZsIDEtCG30dAhxxg3Pdf80O2aMJhJBy-C7Q&s",
+      "price":" 52",
+      "discount": "2",
+      "discountPrice": true,
+      "categoryID": {
+        "$oid": "66b6587da57c326c4136fdeb"
+      },
+      "subCategoryID": {
+        "$oid": "65afbf264694c7655b94fcc6"
+      },
+      "stock": true,
+      "countryOfOrigin": "Bangladesh",
+      "remark": "All season type"
+    },
+    {
+      "title": "Baby soft pampers",
+      "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTR6ip40nUsTWKxxqFUOw8GQuqbnKNGlSdkaA&s",
+      "price": "152",
+      "discount": "5",
+      "discountPrice": true,
+      "categoryID": {
+        "$oid": "66b6587da57c326c4136fdeb"
+      },
+      "subCategoryID": {
+        "$oid": "65afbf264694c7655b94fcc6"
+      },
+      "stock": true,
+      "countryOfOrigin": "Thailand",
+      "remark": "New born baby"
+    },
+    
+    {
+      "title": "Women horlicks",
+      "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTcxvrw4WNUIpnPRXfXNCY_cqPRC6qo13K7CA&s",
+      "discount":true,
+      "discountPrice": "5",
+      "categoryID": {
+        "$oid": "66b6587da57c326c4136fdeb"
+      },
+      "subCategoryID": {
+        "$oid": "65afbf264694c7655b94fcc6"
+      },
+      "stock": true,
+      "countryOfOrigin": "Canada",
+      "remark": "For pregnency mother"
+    }
+    
+  ]
+  
