@@ -1,4 +1,6 @@
-const {categoryListService,subCategoryListService,productListService} = require("../services/productService");
+const {categoryListService,subCategoryListService,productListService,
+    productListByCategoryService,productListByKeywordService,
+} = require("../services/productService");
 
 exports.categoryList = async(req,res)=>{
     let data = await categoryListService();
@@ -12,5 +14,15 @@ exports.subCategoryList = async(req,res)=>{
 
 exports.productList = async(req,res)=>{
     let data = await productListService(req);
+    res.status(200).json(data);
+}
+
+exports.productBycategory = async(req,res)=>{
+    let data = await productListByCategoryService(req);
+    res.status(200).json(data);
+}
+
+exports.productByKeyword = async(req,res)=>{
+    let data = await productListByKeywordService(req);
     res.status(200).json(data);
 }
