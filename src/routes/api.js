@@ -25,6 +25,7 @@ router.get("/subCategoryList" , productController.subCategoryList);
 router.get("/productList/:pageNo/:perPage" , productController.productList);
 router.get("/productByCategory/:pageNo/:perPage/:categoryID",productController.productBycategory);
 router.get("/productByKeyword/:pageNo/:perPage/:keyword",productController.productByKeyword);
+router.get('/productDetails/:productID' ,authVerifyMiddleware, productController.productDetails);
 
 
 
