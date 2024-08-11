@@ -228,11 +228,50 @@ const productDetailsService = async (req) => {
   }
 };
 
+const productListByRemarkService = async(req,res)=>{
+  try{
+    let pageNo = Number(req.params.pageNo);
+    let perPage = Number(req.params.perPage);
+    let skipRow = (pageNo - 1) * perPage;
+    let remark = req.params['remark'];
+    let matchStage ={$match:{remark:remark}};
+    let skipRowStage ={$skip:skipRow};
+    let limitStage = {$limit:perPage};
+    let joinWithCategoryStage = {
+      $lookup: {
+        from: "categories",
+        localField: "categoryID",
+        foreignField: "_id",
+        as: "category",
+      },
+    };
+    let unwindCategoryStage = { $unwind: "$category" };
+    let joinWithSubCategoryStage = {
+      $lookup: {
+        from: "subcategories",
+        localField: "subCategoryID",
+        foreignField: "_id",
+        as: "subCategory",
+      },
+    };
+    let unwindSubCategoryStage = { $unwind: "$subCategory" };
+    let data = await productModel.aggregate([matchStage,skipRowStage,limitStage,
+      joinWithCategoryStage,unwindCategoryStage,joinWithSubCategoryStage,unwindSubCategoryStage]);
+
+      return{status:"success",data:data};
+
+  }
+  catch(e){
+    return{status:"fail",data:e.message};
+  }
+}
+
 module.exports = {
   categoryListService,
   subCategoryListService,
   productListService,
   productListByCategoryService,
   productListByKeywordService,
-  productDetailsService
+  productDetailsService,
+  productListByRemarkService
 };
