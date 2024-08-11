@@ -27,7 +27,8 @@ router.get("/productByCategory/:pageNo/:perPage/:categoryID",productController.p
 router.get("/productByKeyword/:pageNo/:perPage/:keyword",productController.productByKeyword);
 router.get('/productDetails/:productID' ,authVerifyMiddleware, productController.productDetails);
 router.get('/productByRemark/:pageNo/:perPage/:remark',productController.productByRemark);
-
+router.get('/similarProduct/:categoryID' , productController.similarProduct);
+router.get("/productReview/:productID" , productController.productReview);
 
 
 

@@ -3,6 +3,7 @@ const ObjectId = mongoose.Types.ObjectId;
 const categoryModel = require("../models/categoryModel");
 const subCategoryModel = require("../models/subCategoryModel");
 const productModel = require("../models/productModel");
+const reviewModel = require("../models/reviewModel");
 
 const categoryListService = async () => {
   try {
@@ -257,12 +258,73 @@ const productListByRemarkService = async(req,res)=>{
     let unwindSubCategoryStage = { $unwind: "$subCategory" };
     let data = await productModel.aggregate([matchStage,skipRowStage,limitStage,
       joinWithCategoryStage,unwindCategoryStage,joinWithSubCategoryStage,unwindSubCategoryStage]);
-
-      return{status:"success",data:data};
+    return{status:"success",data:data};
 
   }
   catch(e){
     return{status:"fail",data:e.message};
+  }
+}
+
+const similarProductListService = async(req)=>{
+  try{
+    let categoryID = new ObjectId(req.params['categoryID']);
+    let matchStage ={$match:{categoryID:categoryID}};
+    let limitStage={$limit:20};
+    let joinWithCategoryStage = {
+      $lookup: {
+        from: "categories",
+        localField: "categoryID",
+        foreignField: "_id",
+        as: "category",
+      },
+    };
+    let unwindCategoryStage = { $unwind: "$category" };
+    let joinWithSubCategoryStage = {
+      $lookup: {
+        from: "subcategories",
+        localField: "subCategoryID",
+        foreignField: "_id",
+        as: "subCategory",
+      },
+    };
+    let unwindSubCategoryStage = { $unwind: "$subCategory" };
+    let projectStage = {
+      $project: {
+        createdAt: 0,
+        updatedAt: 0,
+        subCategoryID: 0,
+        categoryID: 0,
+        stock: 0,
+        remark: 0,
+        "subCategory._id": 0,
+        "category._id": 0,
+      },
+    };
+    let data = await productModel.aggregate([matchStage,limitStage,joinWithCategoryStage,
+      unwindCategoryStage,joinWithSubCategoryStage,unwindSubCategoryStage,projectStage]);
+
+      return{status:"success",data:data};
+  }
+  catch(e){
+
+  }
+}
+
+const productReviewService = async(req)=>{
+  try{
+      let productID =new ObjectId(req.params['productID']);
+      let matchStage = {$match:{productID:productID}};
+      let joinProfileStage = {$lookup:{from:"profiles" , localField:"userID" , 
+        foreignField:"userID" , as:"profile"}};
+      let unwindProfileStage = {$unwind:"$profile"};
+      let projectionStage = {$project: {'comment': 1, 'rating': 1, 'profile.cus_name': 1}} ;
+      let data = await reviewModel.aggregate([matchStage,joinProfileStage,unwindProfileStage,projectionStage]);
+      return {status:"success",data:data};
+
+  }
+  catch(e){
+    return {status:"fail",data:e.message}
   }
 }
 
@@ -273,5 +335,7 @@ module.exports = {
   productListByCategoryService,
   productListByKeywordService,
   productDetailsService,
-  productListByRemarkService
+  productListByRemarkService,
+  similarProductListService,
+  productReviewService
 };
