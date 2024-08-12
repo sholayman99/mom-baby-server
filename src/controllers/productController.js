@@ -7,7 +7,10 @@ const {
   productDetailsService,
   productListByRemarkService,
   similarProductListService,
-  productReviewService
+  productReviewService,
+  createReviewService,
+  productBySubCategoryService,
+  productByFilterService
 } = require("../services/productService");
 
 exports.categoryList = async (req, res) => {
@@ -25,10 +28,16 @@ exports.productList = async (req, res) => {
   res.status(200).json(data);
 };
 
-exports.productBycategory = async (req, res) => {
+exports.productByCategory = async (req, res) => {
   let data = await productListByCategoryService(req);
   res.status(200).json(data);
 };
+
+exports.productBySubCategory = async (req, res) => {
+  let data = await productBySubCategoryService(req);
+  res.status(200).json(data);
+};
+
 
 exports.productByKeyword = async (req, res) => {
   let data = await productListByKeywordService(req);
@@ -54,3 +63,14 @@ exports.productReview=async(req,res)=>{
   let data = await productReviewService(req);
   res.status(200).json(data);
 }
+
+exports.createReview=async(req,res)=>{
+  let data = await createReviewService(req);
+  res.status(200).json(data);
+}
+
+exports.productByFilter = async(req,res)=>{
+  let data = await productByFilterService(req);
+  res.status(200).json(data);
+}
+

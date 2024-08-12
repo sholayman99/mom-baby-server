@@ -23,12 +23,15 @@ router.post("/updateAvatar",authVerifyMiddleware,userController.updateAvatar);
 router.get("/categoryList" , productController.categoryList);
 router.get("/subCategoryList" , productController.subCategoryList);
 router.get("/productList/:pageNo/:perPage" , productController.productList);
-router.get("/productByCategory/:pageNo/:perPage/:categoryID",productController.productBycategory);
+router.get("/productByCategory/:pageNo/:perPage/:categoryID",productController.productByCategory);
+router.get("/productBySubCategory/:pageNo/:perPage/:subCategoryID" , productController.productBySubCategory);
 router.get("/productByKeyword/:pageNo/:perPage/:keyword",productController.productByKeyword);
 router.get('/productDetails/:productID' ,authVerifyMiddleware, productController.productDetails);
 router.get('/productByRemark/:pageNo/:perPage/:remark',productController.productByRemark);
 router.get('/similarProduct/:categoryID' , productController.similarProduct);
 router.get("/productReview/:productID" , productController.productReview);
+router.post('/createReview' , authVerifyMiddleware , productController.createReview);
+router.post('/productByFilter/:pageNo/:perPage',productController.productByFilter);
 
 
 
