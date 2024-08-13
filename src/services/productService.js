@@ -418,9 +418,9 @@ const productByFilterService = async (req) => {
       matchConditions.subCategoryID = new ObjectId(req.body["subCategoryID"]);
     }
     let matchStage = { $match: matchConditions };
-    let addFieldStage ={
-      $addFields:{numericPrice:{$toInt:"$price"}}
-  }
+    let addFieldStage = {
+      $addFields: { numericPrice: { $toInt: "$price" } },
+    };
     let priceMin = parseInt(req.body["priceMin"]);
     let priceMax = parseInt(req.body["priceMax"]);
     let priceConditions = {};
@@ -469,13 +469,21 @@ const productByFilterService = async (req) => {
         "category._id": 0,
       },
     };
-    let data = await productModel.aggregate([matchStage,addFieldStage,priceMatchStage,skipRowStage,
-      limitStage,joinWithCategoryStage,unwindCategoryStage,joinWithSubCategoryStage,unwindSubCategoryStage,
-      projectStage
+    let data = await productModel.aggregate([
+      matchStage,
+      addFieldStage,
+      priceMatchStage,
+      skipRowStage,
+      limitStage,
+      joinWithCategoryStage,
+      unwindCategoryStage,
+      joinWithSubCategoryStage,
+      unwindSubCategoryStage,
+      projectStage,
     ]);
-    return {status:"success",data:data};
+    return { status: "success", data: data };
   } catch (e) {
-    return {status:"fail",data:e.message};
+    return { status: "fail", data: e.message };
   }
 };
 
@@ -491,5 +499,5 @@ module.exports = {
   productReviewService,
   createReviewService,
   productBySubCategoryService,
-  productByFilterService
+  productByFilterService,
 };

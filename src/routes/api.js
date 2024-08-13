@@ -4,6 +4,8 @@ const router = express.Router();
 //controllers
 const userController = require("../controllers/userController");
 const productController = require("../controllers/productController");
+const cartController = require("../controllers/cartController");
+const featureController = require("../controllers/featureController");
 
 //middlewares
 const authVerifyMiddleware = require("../middlewares/authVerifyMiddleware");
@@ -33,7 +35,14 @@ router.get("/productReview/:productID" , productController.productReview);
 router.post('/createReview' , authVerifyMiddleware , productController.createReview);
 router.post('/productByFilter/:pageNo/:perPage',productController.productByFilter);
 
+//feature
+router.get('/featureList' , featureController.featureList);
 
+//cart
+router.post('/createCart',authVerifyMiddleware,cartController.createCart);
+router.post('/updateCart/:cartID',authVerifyMiddleware,cartController.updateCart);
+router.get('/deleteCart/:cartID',authVerifyMiddleware,cartController.deleteCart);
+router.get('/cartList',authVerifyMiddleware,cartController.cartList);
 
 
 module.exports = router;
