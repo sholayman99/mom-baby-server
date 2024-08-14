@@ -7,6 +7,7 @@ const productController = require("../controllers/productController");
 const cartController = require("../controllers/cartController");
 const featureController = require("../controllers/featureController");
 const wishController = require("../controllers/wishController");
+const invoiceController = require("../controllers/invoiceController");
 
 //middlewares
 const authVerifyMiddleware = require("../middlewares/authVerifyMiddleware");
@@ -50,5 +51,7 @@ router.post('/saveWish',authVerifyMiddleware, wishController.saveWish);
 router.get('/deleteWish/:wishID', authVerifyMiddleware, wishController.deleteWish);
 router.get('/wishList',authVerifyMiddleware, wishController.wishList);
 
+//invoice
+router.get('/createInvoice',authVerifyMiddleware,invoiceController.createInvoice)
 
 module.exports = router;

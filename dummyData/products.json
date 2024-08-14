@@ -3,8 +3,8 @@
       "title": "Women cotton full sleve",
       "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRZsIDEtCG30dAhxxg3Pdf80O2aMJhJBy-C7Q&s",
       "price":" 52",
-      "discount": "2",
-      "discountPrice": true,
+      "discount": true,
+      "discountPrice": "50",
       "categoryID": {
         "$oid": "66b6587da57c326c4136fdeb"
       },
@@ -19,8 +19,8 @@
       "title": "Baby soft pampers",
       "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTR6ip40nUsTWKxxqFUOw8GQuqbnKNGlSdkaA&s",
       "price": "152",
-      "discount": "5",
-      "discountPrice": true,
+      "discount": false,
+      "discountPrice": "0",
       "categoryID": {
         "$oid": "66b6587da57c326c4136fdeb"
       },
@@ -36,7 +36,8 @@
       "title": "Women horlicks",
       "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTcxvrw4WNUIpnPRXfXNCY_cqPRC6qo13K7CA&s",
       "discount":true,
-      "discountPrice": "5",
+      "price":"200",
+      "discountPrice": "150",
       "categoryID": {
         "$oid": "66b6587da57c326c4136fdeb"
       },

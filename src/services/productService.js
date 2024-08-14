@@ -4,6 +4,7 @@ const categoryModel = require("../models/categoryModel");
 const subCategoryModel = require("../models/subCategoryModel");
 const productModel = require("../models/productModel");
 const reviewModel = require("../models/reviewModel");
+const sliderModel = require("../models/sliderModel");
 
 const categoryListService = async () => {
   try {
@@ -22,6 +23,15 @@ const subCategoryListService = async () => {
     return { status: "fail", data: e };
   }
 };
+
+const sliderList = async(req)=>{
+  try {
+    let data = await sliderModel.aggregate([{ $match:{}}]);
+    return { status: "success", data: data };
+  } catch (e) {
+    return { status: "fail", data: e };
+  }
+}
 
 const productListService = async (req) => {
   try {
