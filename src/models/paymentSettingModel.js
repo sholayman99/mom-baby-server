@@ -1,8 +1,6 @@
 const mongoose = require("mongoose");
 
 const dataSchema = mongoose.Schema({
-    store_id:{type:String,required:true},
-    store_pass:{type:String,required:true},
     currency:{type:String,required:true},
     success_url:{type:String,required:true},
     fail_url:{type:String,required:true},

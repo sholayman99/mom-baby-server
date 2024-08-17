@@ -52,6 +52,6 @@ router.get('/deleteWish/:wishID', authVerifyMiddleware, wishController.deleteWis
 router.get('/wishList',authVerifyMiddleware, wishController.wishList);
 
 //invoice
-router.get('/createInvoice',authVerifyMiddleware,invoiceController.createInvoice)
+router.get('/createInvoice',authVerifyMiddleware,invoiceController.createInvoice);
 
 module.exports = router;
