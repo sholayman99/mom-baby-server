@@ -497,6 +497,22 @@ const productByFilterService = async (req) => {
   }
 };
 
+const averageRatingProductService = async(req)=>{
+ try{
+  let productID = new ObjectId(req.params.productID);
+  let matchStage = {$match:{productID:productID}};
+  let groupByStage ={$group:{
+    _id:"",
+    avgRating:{$avg:"$rating"}
+  }};
+  let data = await reviewModel.aggregate([matchStage,groupByStage]);
+  return {status:"success" , data:data};
+ }
+ catch(e){
+  return {status:"fail" , data:e.message};
+ }
+}
+
 module.exports = {
   categoryListService,
   subCategoryListService,
@@ -510,4 +526,5 @@ module.exports = {
   createReviewService,
   productBySubCategoryService,
   productByFilterService,
+  averageRatingProductService
 };

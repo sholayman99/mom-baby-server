@@ -8,9 +8,11 @@ const cartController = require("../controllers/cartController");
 const featureController = require("../controllers/featureController");
 const wishController = require("../controllers/wishController");
 const invoiceController = require("../controllers/invoiceController");
+const adminController = require("../controllers/adminController");
 
 //middlewares
 const authVerifyMiddleware = require("../middlewares/authVerifyMiddleware");
+const adminVerifyMiddlewre = require("../middlewares/adminVerifyMiddlewre");
 
 //user
 router.post("/registration" , userController.userRegistration);
@@ -31,6 +33,7 @@ router.get("/productByCategory/:pageNo/:perPage/:categoryID",productController.p
 router.get("/productBySubCategory/:pageNo/:perPage/:subCategoryID" , productController.productBySubCategory);
 router.get("/productByKeyword/:pageNo/:perPage/:keyword",productController.productByKeyword);
 router.get('/productDetails/:productID' ,authVerifyMiddleware, productController.productDetails);
+router.get('/avgProductRating/:productID' ,authVerifyMiddleware, productController.avgProductRating);
 router.get('/productByRemark/:pageNo/:perPage/:remark',productController.productByRemark);
 router.get('/similarProduct/:categoryID' , productController.similarProduct);
 router.get("/productReview/:productID" , productController.productReview);
@@ -59,5 +62,16 @@ router.post('/paymentCancel/:txtID',  invoiceController.paymentCancel);
 router.post('/paymentIPN/:txtID', invoiceController.paymentIpn);
 router.get('/invoiceList',authVerifyMiddleware,invoiceController.invoiceList)
 router.get('/invoiceProductList/:invoiceID',authVerifyMiddleware,invoiceController.invoiceProductList)
+
+//admin
+router.post('/createProduct',authVerifyMiddleware,adminVerifyMiddlewre,adminController.createProduct);
+router.post('/createProductDetails',authVerifyMiddleware,adminVerifyMiddlewre,adminController.createProductDetails);
+router.post('/updateProduct/:productID',authVerifyMiddleware,adminVerifyMiddlewre,adminController.updateProduct);
+router.post('/updateProductdetails/:detailID',authVerifyMiddleware,adminVerifyMiddlewre,adminController.updateProductdetails);
+router.post('/deleteProduct/:productID',authVerifyMiddleware,adminVerifyMiddlewre,adminController.deleteProduct);
+router.post('/createAdmin/:userID',authVerifyMiddleware,adminVerifyMiddlewre,adminController.createAdmin);
+router.post('/removeUser/:userID',authVerifyMiddleware,adminVerifyMiddlewre,adminController.removeUser);
+router.post('/deleteProduct/:productID',authVerifyMiddleware,adminVerifyMiddlewre,adminController.deleteProduct);
+
 
 module.exports = router;

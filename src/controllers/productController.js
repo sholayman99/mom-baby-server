@@ -10,7 +10,8 @@ const {
   productReviewService,
   createReviewService,
   productBySubCategoryService,
-  productByFilterService
+  productByFilterService,
+  averageRatingProductService
 } = require("../services/productService");
 
 exports.categoryList = async (req, res) => {
@@ -71,6 +72,11 @@ exports.createReview=async(req,res)=>{
 
 exports.productByFilter = async(req,res)=>{
   let data = await productByFilterService(req);
+  res.status(200).json(data);
+}
+
+exports.avgProductRating = async(req,res)=>{
+  let data = await averageRatingProductService(req);
   res.status(200).json(data);
 }
 
