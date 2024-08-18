@@ -52,6 +52,12 @@ router.get('/deleteWish/:wishID', authVerifyMiddleware, wishController.deleteWis
 router.get('/wishList',authVerifyMiddleware, wishController.wishList);
 
 //invoice
-router.get('/createInvoice',authVerifyMiddleware,invoiceController.createInvoice);
+router.post('/createInvoice',authVerifyMiddleware,invoiceController.createInvoice);
+router.post('/paymentSuccess/:txtID', invoiceController.paymentSuccess);
+router.post('/paymentFail/:txtID',  invoiceController.paymentFail);
+router.post('/paymentCancel/:txtID',  invoiceController.paymentCancel);
+router.post('/paymentIPN/:txtID', invoiceController.paymentIpn);
+router.get('/invoiceList',authVerifyMiddleware,invoiceController.invoiceList)
+router.get('/invoiceProductList/:invoiceID',authVerifyMiddleware,invoiceController.invoiceProductList)
 
 module.exports = router;

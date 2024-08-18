@@ -30,7 +30,7 @@ const createInvoiceService = async (req) => {
       joinWithproductStage,
       unwindProduuctStage,
     ]);
-    let totalAmout = 0;
+    let totalAmount = 0;
     cartProducts.forEach((element) => {
       let price;
       if (element["product"]["discount"]) {
@@ -38,10 +38,10 @@ const createInvoiceService = async (req) => {
       } else {
         price = parseFloat(element["product"]["price"]);
       }
-      totalAmout += parseFloat(element["qty"]) * price;
+      totalAmount += parseFloat(element["qty"]) * price;
     });
-    let vat = totalAmout * 0.05; //5% vat
-    let payable = totalAmout + vat;
+    let vat = totalAmount * 0.05; //5% vat
+    let payable = totalAmount + vat;
 
     //profile details
     let profile = await profileModel.aggregate([matchStage]);
@@ -62,7 +62,7 @@ const createInvoiceService = async (req) => {
       val_id: val_id,
       delivery_status: deliveryStatus,
       payment_status: paymentStatus,
-      total: totalAmout,
+      total: totalAmount,
       vat: vat,
     });
 
@@ -87,12 +87,12 @@ const createInvoiceService = async (req) => {
     form.append('store_id', `${process.env.STORE_ID}`);
     form.append('store_passwd',`${process.env.STORE_PASS}`);
     form.append('total_amount',payable.toString());
-    form.append('currency',await paymentSetting[0]?.currency);
+    form.append('currency',paymentSetting[0]?.currency);
     form.append('tran_id',tran_id);
-    form.append('success_url',await paymentSetting[0]?.success_url);
-    form.append('fail_url',await paymentSetting[0]?.fail_url);
-    form.append('cancel_url',await paymentSetting[0]?.cancel_url);
-    form.append('ipn_url',await paymentSetting[0]?.ipn_url);
+    form.append('success_url',`${paymentSetting[0].success_url}/${tran_id}`);
+    form.append('fail_url', `${paymentSetting[0].fail_url}/${tran_id}`);
+    form.append('cancel_url',`${paymentSetting[0].cancel_url}/${tran_id}`);
+    form.append('ipn_url',`${paymentSetting[0].ipn_url}/${tran_id}`);
     //customer details
     form.append('cus_name',profile[0]?.cus_name);
     form.append('cus_email',cus_email);
@@ -128,4 +128,90 @@ const createInvoiceService = async (req) => {
   }
 };
 
-module.exports = { createInvoiceService };
+
+const paymentSuccessService = async(req)=>{
+   try{
+       let txtID = req.params.txtID;
+       await invoiceModel.updateOne({tran_id:txtID},{payment_status:"success"});
+       return {status:'success'}
+   }
+   catch{
+    return {status:'failed' , data:e.message}
+   }
+}
+
+const paymentFailService = async(req)=>{
+  try{
+    let txtID = req.params.txtID;
+    await invoiceModel.updateOne({tran_id:txtID},{payment_status:"fail"});
+    return {status:'fail'}
+}
+catch{
+ return {status:'failed' , data:e.message}
+}
+}
+
+
+const paymentCancelService = async(req)=>{
+  try{
+    let txtID = req.params.txtID;
+    await invoiceModel.updateOne({tran_id:txtID},{payment_status:"cancel"});
+    return {status:'cancel'}
+}
+catch{
+ return {status:'failed' , data:e.message}
+}
+}
+
+const paymentIpnService = async(req)=>{
+  try{
+    let txtID = req.params.txtID;
+    let status = req.body['status']
+    await invoiceModel.updateOne({tran_id:txtID},{payment_status:status});
+    return {status:status}
+}
+catch{
+ return {status:'failed' , data:e.message}
+}
+}
+
+
+const invoiceListService = async(req)=>{
+  try{
+     let userID = new ObjectId(req.headers.userID) ;
+     console.log(userID)
+     let data = await invoiceModel.aggregate([{$match:{userID:userID}}]) ;
+     return {status:"success" , data:data} ;
+  }
+  catch{
+    return {status:"fail" , data:e.message} ;
+  }
+}
+
+
+const invoiceProductListService = async(req)=>{
+  try{
+     let userID = new ObjectId(req.headers.userID) ;
+     let invoiceID = new ObjectId(req.params.invoiceID);
+     let matchStage = {$match:{userID:userID,invoiceID:invoiceID}};
+     let joinWithProductStage = {
+      $lookup: {
+        from: "products",localField: "productID",
+        foreignField: "_id", as: "product",
+      },
+    };
+    let unwindProduuctStage = { $unwind: "$product" };
+    let data = await invoiceProductModel.aggregate([
+      matchStage,
+      joinWithProductStage,
+      unwindProduuctStage,
+    ]);
+     return {status:"success" , data:data} ;
+  }
+  catch{
+    return {status:"fail" , data:e.message} ;
+  }
+}
+
+module.exports = {createInvoiceService,paymentSuccessService,paymentFailService,
+  paymentCancelService,paymentIpnService,invoiceListService,invoiceProductListService};
