@@ -71,7 +71,6 @@ router.post('/updateProductdetails/:detailID',authVerifyMiddleware,adminVerifyMi
 router.post('/deleteProduct/:productID',authVerifyMiddleware,adminVerifyMiddlewre,adminController.deleteProduct);
 router.post('/createAdmin/:userID',authVerifyMiddleware,adminVerifyMiddlewre,adminController.createAdmin);
 router.post('/removeUser/:userID',authVerifyMiddleware,adminVerifyMiddlewre,adminController.removeUser);
-router.post('/deleteProduct/:productID',authVerifyMiddleware,adminVerifyMiddlewre,adminController.deleteProduct);
 
 
 module.exports = router;

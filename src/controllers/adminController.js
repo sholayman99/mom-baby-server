@@ -29,12 +29,12 @@ exports.updateProductdetails = async (req, res) => {
 };
 
 exports.createAdmin = async (req, res) => {
-  let data = await deleteProductService(req);
+  let data = await createAdminService(req);
   res.status(200).json(data);
 };
 
 exports.deleteProduct = async (req, res) => {
-  let data = await createAdminService(req);
+  let data = await deleteProductService(req);
   res.status(200).json(data);
 };
 
