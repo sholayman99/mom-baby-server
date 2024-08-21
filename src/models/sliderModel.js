@@ -1,7 +1,9 @@
 const mongoose = require("mongoose");
 
 const dataSchema = mongoose.Schema({
-    image:{type:String,required:true}
+    image:{type:String,required:true},
+    title:{type:String,required:true},
+    des:{type:String,required:true}
 },
 {timestamps:true,versionKey:false});
 
