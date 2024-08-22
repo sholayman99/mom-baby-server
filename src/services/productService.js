@@ -24,7 +24,7 @@ const subCategoryListService = async () => {
   }
 };
 
-const sliderList = async(req)=>{
+const sliderListService = async(req)=>{
   try {
     let data = await sliderModel.aggregate([{ $match:{}}]);
     return { status: "success", data: data };
@@ -516,6 +516,7 @@ const averageRatingProductService = async(req)=>{
 module.exports = {
   categoryListService,
   subCategoryListService,
+  sliderListService,
   productListService,
   productListByCategoryService,
   productListByKeywordService,

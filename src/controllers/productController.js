@@ -1,6 +1,7 @@
 const {
   categoryListService,
   subCategoryListService,
+  sliderListService,
   productListService,
   productListByCategoryService,
   productListByKeywordService,
@@ -21,6 +22,11 @@ exports.categoryList = async (req, res) => {
 
 exports.subCategoryList = async (req, res) => {
   let data = await subCategoryListService();
+  res.status(200).json(data);
+};
+
+exports.sliderList = async (req, res) => {
+  let data = await sliderListService();
   res.status(200).json(data);
 };
 
