@@ -179,7 +179,6 @@ catch{
 const invoiceListService = async(req)=>{
   try{
      let userID = new ObjectId(req.headers.userID) ;
-     console.log(userID)
      let data = await invoiceModel.aggregate([{$match:{userID:userID}}]) ;
      return {status:"success" , data:data} ;
   }
