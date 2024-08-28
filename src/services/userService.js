@@ -5,12 +5,11 @@ const { encodeToken } = require("../utility/tokenUtility");
 
 const userRegistrationService =async (req)=>{
  try{
-    let reqBody = req.body;
     let email = reqBody['email'];
     let code = Math.round(Math.floor(100000+Math.random()*900000));
     await emailSend(email,"Verification for new user!",`Your Otp Verification Code is ${code}`);
     await otpModel.create({email:email,otp:code});
-    return ({status:"success", data:data});
+    return ({status:"success", message:"6 digit otp has been sent!"});
  }
  catch(e){
     return ({status:"fail", data:e});
