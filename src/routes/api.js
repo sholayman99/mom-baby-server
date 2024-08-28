@@ -16,7 +16,7 @@ const adminVerifyMiddlewre = require("../middlewares/adminVerifyMiddlewre");
 
 //user
 router.post("/registration" , userController.userRegistration);
-router.get("/userVerify/:email/:otp",userController.userVerify);
+router.post("/userVerify/:otp",userController.userVerify);
 router.post('/login' , userController.userLogin);
 router.get("/updatePassOtp" , authVerifyMiddleware , userController.updatePassOtp);
 router.post('/resetPass/:otp',authVerifyMiddleware,userController.resetPass);

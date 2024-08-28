@@ -6,10 +6,11 @@ const { encodeToken } = require("../utility/tokenUtility");
 const userRegistrationService =async (req)=>{
  try{
     let email = req.body['email'];
+    console.log(email)
     let code = Math.round(Math.floor(100000+Math.random()*900000));
     await emailSend(email,"Verification for new user!",`Your Otp Verification Code is ${code}`);
-    await otpModel.create({email:email,otp:code});
-    return ({status:"success", message:"6 digit otp has been sent!"});
+    let data = await otpModel.create({email:email,otp:code});
+    return ({status:"success", message:"6 digit otp has been sent!",data:data});
  }
  catch(e){
     return ({status:"fail", data:e});
@@ -19,8 +20,8 @@ const userRegistrationService =async (req)=>{
 const userVerificationService = async(req)=>{
    try{
       let otp = req.params['otp'];
-      let email = req.params['email'];
       let reqBody = req.body;
+      let email = reqBody['email'];
       let status = 0;
       let updatedStatus =1;
       let otpCount = await otpModel.aggregate([{$match:{email:email,otp:otp}}]);
