@@ -10,7 +10,6 @@ const userRegistrationService =async (req)=>{
     let code = Math.round(Math.floor(100000+Math.random()*900000));
     await emailSend(email,"Verification for new user!",`Your Otp Verification Code is ${code}`);
     await otpModel.create({email:email,otp:code});
-    let data = await userModel.create(reqBody);
     return ({status:"success", data:data});
  }
  catch(e){
@@ -22,12 +21,14 @@ const userVerificationService = async(req)=>{
    try{
       let otp = req.params['otp'];
       let email = req.params['email'];
+      let reqBody = req.body;
       let status = 0;
       let updatedStatus =1;
       let otpCount = await otpModel.aggregate([{$match:{email:email,otp:otp}}]);
       if(otpCount.length === 1){
          let data = await otpModel.updateOne({email:email,otp:otp,status:status},
             {email:email,otp:otp,status:updatedStatus});
+         await userModel.create(reqBody);
       return {status:"success",data:data};      
       }
    }
