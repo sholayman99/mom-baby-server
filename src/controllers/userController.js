@@ -21,7 +21,7 @@ exports.userLogin =async(req,res)=>{
   if(data['message'] !== "valid user!"){
    res.status(200).json(data);
   }else{
-   let cookieOption = {expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),httpOnly:false,samesite:'none'};
+   let cookieOption = {expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),httpOnly:false,sameSite:'none',secure: true};
    res.cookie("token",data['data'],cookieOption);
    res.status(200).json(data);
 }};
