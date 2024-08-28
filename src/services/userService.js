@@ -5,7 +5,7 @@ const { encodeToken } = require("../utility/tokenUtility");
 
 const userRegistrationService =async (req)=>{
  try{
-    let email = reqBody['email'];
+    let email = req.body['email'];
     let code = Math.round(Math.floor(100000+Math.random()*900000));
     await emailSend(email,"Verification for new user!",`Your Otp Verification Code is ${code}`);
     await otpModel.create({email:email,otp:code});
